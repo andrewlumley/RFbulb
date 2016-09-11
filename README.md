@@ -6,4 +6,4 @@ The `RFbulb` plugin is a tool which allows a Raspberry Pi Homebridge server to c
 
 The `RFbulb` plugin may be installed by running the following terminal command:
 
-  `sudo npm install -g homebridge-RFbulb`
+`sudo npm install -g homebridge-RFbulb`
