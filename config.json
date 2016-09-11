@@ -11,7 +11,8 @@
     "accessories": [
         {
           "accessory": "RFbulb",
-          "name": "Bedroom Light"
+          "name": "Bedroom Light",
+          "address": "33"
         }
     ]
 }
