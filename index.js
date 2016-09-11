@@ -3,7 +3,7 @@ var Service, Characteristic;
 
 var spawn = require('child_process').spawn;
 var py = spawn('python', ['/Users/andrewlumley/Desktop/Test2.py']);
-var data = [1,33,25];
+var data = [10,10,10];
 var dataString = '';
 
 module.exports = function(homebridge) {
@@ -35,15 +35,33 @@ RFbulbAccessory.prototype.getOn = function(callback) {
 }
 
 RFbulbAccessory.prototype.setOn = function(on, callback) {
-	var url = on ? "on": "off";
-	request.get({
-		url: 'http://192.168.1.171:3000/' + url
-	}, function(err, response, body) {
-		callback(null, on);
-	}.bind(this));
+	var state = on ? "on": "off";
+	if (state == "on") {
+		data = [1,33,100];
+		dataString = '';
+		py.stdout.on('data', function(data) {
+			dataString += data.toString();
+		});
+		py.stdout.on('end', function() {
+			console.log(dataString);
+		});
+		py.stdin.write(JSON.stringify(data));
+		py.stdin.end();
+	}
+	if (state == "off") {
+		data = [1,33,0];
+		dataString = '';
+		py.stdout.on('data', function(data) {
+			dataString += data.toString();
+		});
+		py.stdout.on('end', function() {
+			console.log(dataString);
+		});
+		py.stdin.write(JSON.stringify(data));
+		py.stdin.end();
+	}
 }
 
 RFbulbAccessory.prototype.getServices = function() {
 	return [this.service];
 }
-
