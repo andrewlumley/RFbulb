@@ -26,12 +26,7 @@ function RFbulbAccessory(log, config) {
 }
 
 RFbulbAccessory.prototype.getOn = function(callback) {
-	request.get({
-		url: 'http://192.168.1.171:3000/status'
-	}, function(err, response, body) {
-		var status = body == 'true' ? true : false;
-		callback(null, status);
-	}.bind(this));
+	callback(null, true);
 }
 
 RFbulbAccessory.prototype.setOn = function(on, callback) {
@@ -43,7 +38,7 @@ RFbulbAccessory.prototype.setOn = function(on, callback) {
 			dataString += data.toString();
 		});
 		py.stdout.on('end', function() {
-			console.log(dataString);
+			this.log(dataString);
 		});
 		py.stdin.write(JSON.stringify(data));
 		py.stdin.end();
@@ -55,11 +50,12 @@ RFbulbAccessory.prototype.setOn = function(on, callback) {
 			dataString += data.toString();
 		});
 		py.stdout.on('end', function() {
-			console.log(dataString);
+			this.log(dataString);
 		});
 		py.stdin.write(JSON.stringify(data));
 		py.stdin.end();
 	}
+	callback(null);
 }
 
 RFbulbAccessory.prototype.getServices = function() {
