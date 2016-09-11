@@ -6,6 +6,8 @@ var py = spawn('python', ['/Users/andrewlumley/Desktop/Test2.py']);
 var data = [10,10,10];
 var dataString = '';
 
+var RFstatus = true;
+
 module.exports = function(homebridge) {
 	Service = homebridge.hap.Service;
 	Characteristic = homebridge.hap.Characteristic;
@@ -26,7 +28,7 @@ function RFbulbAccessory(log, config) {
 }
 
 RFbulbAccessory.prototype.getOn = function(callback) {
-	callback(null, true);
+	callback(null, RFstatus);
 }
 
 RFbulbAccessory.prototype.setOn = function(on, callback) {
@@ -42,6 +44,7 @@ RFbulbAccessory.prototype.setOn = function(on, callback) {
 		});
 		py.stdin.write(JSON.stringify(data));
 		py.stdin.end();
+		RFstatus = true;
 	}
 	if (state == "off") {
 		data = [1,33,0];
@@ -54,6 +57,7 @@ RFbulbAccessory.prototype.setOn = function(on, callback) {
 		});
 		py.stdin.write(JSON.stringify(data));
 		py.stdin.end();
+		RFstatus = false;
 	}
 	callback(null);
 }
