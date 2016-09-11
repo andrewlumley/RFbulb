@@ -1,17 +1,17 @@
 {
   "name": "homebridge-RFbulb",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "Control lights via RF",
-  "license": "ISC",
+  "license": "MIT",
   "keywords": [
     "homebridge-plugin"
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/andrewlumley/homebridge-RFbulb.git"
+    "url": "git://github.com/andrewlumley/RFbulb.git"
   },
   "bugs": {
-    "url": "http://github.com/andrewlumley/homebridge-RFbulb/issues"
+    "url": "http://github.com/andrewlumley/RFbulb/issues"
   },
   "engines": {
     "node": ">=0.12.0",
