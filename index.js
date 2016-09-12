@@ -1,8 +1,7 @@
-var request = require("request");
 var Service, Characteristic;
 
 var spawn = require('child_process').spawn;
-var py = spawn('python', ['/Users/andrewlumley/Desktop/Test2.py']);
+var py = spawn('python', ['/home/pi/Desktop/RFbulb/nRF24L01PLUS.py']);
 var data = [10,10,10];
 var dataString = '';
 
@@ -19,6 +18,7 @@ function RFbulbAccessory(log, config) {
 	this.log = log;
 	this.config = config;
 	this.name = config["name"];
+	this.address = config["address"];
 
 	this.service = new Service.Lightbulb(this.name);
 	this.service
@@ -34,26 +34,28 @@ RFbulbAccessory.prototype.getOn = function(callback) {
 RFbulbAccessory.prototype.setOn = function(on, callback) {
 	var state = on ? "on": "off";
 	if (state == "on") {
-		data = [1,33,100];
+		this.log("Setting " + this.name + " to " + state) // Temp
+		data = [1,parseInt(this.address, 10),100];
 		dataString = '';
 		py.stdout.on('data', function(data) {
 			dataString += data.toString();
 		});
 		py.stdout.on('end', function() {
-			this.log(dataString);
+			console.log(dataString);
 		});
 		py.stdin.write(JSON.stringify(data));
 		py.stdin.end();
 		RFstatus = true;
 	}
 	if (state == "off") {
-		data = [1,33,0];
+		this.log("Setting " + this.name + " to " + state) // Temp
+		data = [1,parseInt(this.address, 10),0];
 		dataString = '';
 		py.stdout.on('data', function(data) {
 			dataString += data.toString();
 		});
 		py.stdout.on('end', function() {
-			this.log(dataString);
+			console.log(dataString);
 		});
 		py.stdin.write(JSON.stringify(data));
 		py.stdin.end();
