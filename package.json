@@ -1,6 +1,6 @@
 {
   "name": "homebridge-RFbulb",
-  "version": "1.0.5",
+  "version": "1.0.13",
   "description": "Control lights via RF",
   "license": "MIT",
   "keywords": [
