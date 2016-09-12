@@ -1,7 +1,5 @@
 var Service, Characteristic;
 
-var spawn = require('child_process').spawn;
-var py = spawn('python', ['/home/pi/Desktop/RFbulb/nRF24L01PLUS.py']);
 var data = [10,10,10];
 var dataString = '';
 
@@ -33,6 +31,8 @@ RFbulbAccessory.prototype.getOn = function(callback) {
 
 RFbulbAccessory.prototype.setOn = function(on, callback) {
 	var state = on ? "on": "off";
+	var spawn = require('child_process').spawn;
+	var py = spawn('python', ['/home/pi/Desktop/RFbulb/nRF24L01PLUS.py']);
 	if (state == "on") {
 		this.log("Setting " + this.name + " to " + state) // Temp
 		data = [1,parseInt(this.address, 10),100];
@@ -46,6 +46,7 @@ RFbulbAccessory.prototype.setOn = function(on, callback) {
 		py.stdin.write(JSON.stringify(data));
 		py.stdin.end();
 		RFstatus = true;
+		this.log(this.name + " set to " + state)
 	}
 	if (state == "off") {
 		this.log("Setting " + this.name + " to " + state) // Temp
@@ -60,6 +61,7 @@ RFbulbAccessory.prototype.setOn = function(on, callback) {
 		py.stdin.write(JSON.stringify(data));
 		py.stdin.end();
 		RFstatus = false;
+		this.log(this.name + " set to " + state)
 	}
 	callback(null);
 }
