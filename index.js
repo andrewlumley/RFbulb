@@ -26,7 +26,32 @@ function RFbulbAccessory(log, config) {
 }
 
 RFbulbAccessory.prototype.getOn = function(callback) {
-	callback(null, RFstatus);
+	this.log("Determining state of: " + this.name)
+	var spawn = require('child_process').spawn;
+	var py = spawn('python', ['/home/pi/Desktop/RFbulb/nRF24L01PLUS.py']);
+	data = [10,parseInt(this.address, 10),100];
+	dataString = '';
+	py.stdout.on('data', function(data) {
+		dataString += data.toString();
+	});
+	py.stdout.on('end', function() {
+		RFstatus = dataString;
+		if (RFstatus == 0) {
+			console.log("Device OFF")
+			callback(null, false);
+		}
+		else if (RFstatus == 100) {
+			console.log("Device ON")
+			callback(null, true);
+		}
+		else {
+			console.log("There was an error")
+			console.log(RFstatus)
+			callback(null, false);
+		}
+	});
+	py.stdin.write(JSON.stringify(data));
+	py.stdin.end();
 }
 
 RFbulbAccessory.prototype.setOn = function(on, callback) {
